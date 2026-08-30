@@ -1,0 +1,957 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+
+    background: #020207;
+    color: #f5eee9;
+
+    font-family: "Cairo", sans-serif;
+}
+
+
+/* =========================
+   السماء
+========================= */
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    z-index: -10;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.35),
+            rgba(0, 0, 0, 0.58)
+        ),
+        url("https://png.pngtree.com/thumb_back/fh260/background/20220920/pngtree-night-sky-full-of-stars-space-natural-light-photo-image_2541287.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+/* =========================
+   النجوم
+========================= */
+
+.stars {
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: -5;
+
+    background-image:
+        radial-gradient(
+            circle,
+            white 1px,
+            transparent 1.5px
+        );
+
+    background-size: 90px 90px;
+
+    opacity: .28;
+}
+
+.stars-two {
+    background-image:
+        radial-gradient(
+            circle,
+            #ffdce9 1px,
+            transparent 1.5px
+        );
+
+    background-size: 150px 150px;
+
+    background-position: 30px 50px;
+
+    opacity: .22;
+}
+
+.stars-three {
+    background-image:
+        radial-gradient(
+            circle,
+            #d9d0ff 1px,
+            transparent 1.5px
+        );
+
+    background-size: 230px 230px;
+
+    opacity: .20;
+}
+
+
+/* =========================
+   الموقع
+========================= */
+
+.website {
+    width: 100%;
+    max-width: 720px;
+
+    margin: auto;
+
+    padding: 10px 15px;
+}
+
+
+/* =========================
+   البداية
+========================= */
+
+.hero {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 30px 10px;
+}
+
+.tiny-title {
+    font-family: "Aref Ruqaa", serif;
+
+    color: #e5bfd2;
+
+    font-size: 21px;
+
+    margin-bottom: 15px;
+}
+
+.hero h1 {
+    margin: 0;
+
+    font-family: "Aref Ruqaa", serif;
+
+    font-size: clamp(52px, 13vw, 85px);
+
+    font-weight: 400;
+
+    line-height: 1.2;
+
+    background:
+        linear-gradient(
+            90deg,
+            #fff3f7,
+            #e9b4cc,
+            #d8c6ee,
+            #fff3f7
+        );
+
+    -webkit-background-clip: text;
+
+    color: transparent;
+}
+
+.hero h1 span {
+    font-family: Arial, sans-serif;
+
+    font-size: .55em;
+}
+
+.names {
+    font-family: "Aref Ruqaa", serif;
+
+    color: #dfc1d1;
+
+    font-size: 22px;
+
+    margin-top: 5px;
+}
+
+.start-date {
+    font-family: "Amiri", serif;
+
+    color: #f0d3df;
+
+    font-size: 21px;
+
+    margin-top: 15px;
+}
+
+.sky-message {
+    font-family: "Aref Ruqaa", serif;
+
+    font-size: 27px;
+
+    line-height: 1.9;
+
+    color: #f3d9e4;
+
+    margin-top: 40px;
+}
+
+.intro {
+    max-width: 500px;
+
+    font-family: "Amiri", serif;
+
+    color: #ddd1d6;
+
+    font-size: 17px;
+
+    line-height: 2.2;
+}
+
+
+/* =========================
+   الأزرار
+========================= */
+
+.start-btn,
+.letter-open,
+.song-btn {
+    border:
+        1px solid
+        rgba(235, 180, 210, .45);
+
+    background:
+        rgba(20, 10, 25, .65);
+
+    color: #f5d8e5;
+
+    padding:
+        12px 24px;
+
+    border-radius: 30px;
+
+    font-family: "Cairo", sans-serif;
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    transition: .3s;
+}
+
+.start-btn {
+    margin-top: 20px;
+}
+
+.start-btn:hover,
+.letter-open:hover,
+.song-btn:hover {
+    transform: translateY(-2px);
+
+    background:
+        rgba(235, 180, 210, .16);
+}
+
+
+/* =========================
+   الأقسام
+========================= */
+
+.memory-section,
+.letter-section {
+    margin: 85px 0;
+
+    padding: 35px 10px;
+
+    text-align: center;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, .12);
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, .12);
+}
+
+.section-heading {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+}
+
+.section-heading h2 {
+    font-family: "Aref Ruqaa", serif;
+
+    font-size: 35px;
+
+    font-weight: 400;
+
+    color: #e8bed2;
+
+    margin: 0 0 15px;
+}
+
+.section-heading span {
+    font-size: 17px;
+}
+
+.memory-date {
+    font-family: "Amiri", serif;
+
+    color: #e4c7d5;
+
+    font-size: 20px;
+
+    margin-bottom: 20px;
+}
+
+.memory-text {
+    max-width: 550px;
+
+    margin: auto;
+}
+
+.memory-text h3 {
+    font-family: "Aref Ruqaa", serif;
+
+    font-size: 29px;
+
+    font-weight: 400;
+
+    color: #edc7d6;
+}
+
+.memory-text p {
+    font-family: "Amiri", serif;
+
+    font-size: 19px;
+
+    line-height: 2.1;
+
+    color: #ded2d6;
+}
+
+.memory-text .highlight {
+    color: #edb7ce;
+}
+
+
+/* =========================
+   الصور المتراكبة
+========================= */
+
+.photo-stack {
+    width: min(94%, 500px);
+
+    margin: 35px auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+
+/* كل صورة راكبة فوق اللي تحتها */
+
+.photo-stack img,
+.memory-video {
+
+    width: 92%;
+
+    display: block;
+
+    position: relative;
+
+    padding: 8px;
+
+    background: #eee5dc;
+
+    box-shadow:
+        0 15px 35px
+        rgba(0, 0, 0, .75);
+
+    margin-top: -55px;
+
+    transition: .3s;
+}
+
+
+/* أول صورة تبدأ من مكانها */
+
+.photo-stack img:first-child {
+    margin-top: 0;
+}
+
+
+/* اختلاف الحواف */
+
+.photo-stack img:nth-child(3n) {
+    border-radius:
+        2px 15px 4px 10px;
+}
+
+.photo-stack img:nth-child(3n + 1) {
+    border-radius:
+        13px 3px 9px 2px;
+}
+
+.photo-stack img:nth-child(3n + 2) {
+    border-radius:
+        5px 12px 3px 14px;
+}
+
+
+/* اختلاف الميل */
+
+.photo-stack img:nth-child(4n) {
+    transform: rotate(1.2deg);
+}
+
+.photo-stack img:nth-child(4n + 1) {
+    transform: rotate(-1.2deg);
+}
+
+.photo-stack img:nth-child(4n + 2) {
+    transform: rotate(.7deg);
+}
+
+.photo-stack img:nth-child(4n + 3) {
+    transform: rotate(-.6deg);
+}
+
+
+/* عند لمس الصورة */
+
+.photo-stack img:hover {
+    transform:
+        scale(1.03)
+        rotate(0deg);
+
+    z-index: 50;
+}
+
+
+/* الفيديو */
+
+.memory-video {
+
+    margin-top: -55px;
+
+    background: #eee5dc;
+
+    border-radius:
+        7px 3px 10px 4px;
+
+    transform: rotate(.6deg);
+}
+
+
+/* =========================
+   الرسائل
+========================= */
+
+.section-intro {
+    font-family: "Amiri", serif;
+
+    color: #cfc1c6;
+
+    font-size: 17px;
+
+    line-height: 2;
+}
+
+.message-stack {
+    width: min(96%, 520px);
+
+    margin: 30px auto;
+}
+
+.message-card {
+
+    position: relative;
+
+    padding: 12px 18px;
+
+    margin-top: -3px;
+
+    text-align: right;
+
+    font-family: "Amiri", serif;
+
+    font-size: 19px;
+
+    line-height: 1.7;
+
+    color: #eadde1;
+
+    background:
+        rgba(12, 7, 17, .68);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, .13);
+
+    box-shadow:
+        0 10px 25px
+        rgba(0, 0, 0, .5);
+
+    border-radius: 4px 9px 5px 7px;
+}
+
+.message-card:nth-child(odd) {
+    transform: rotate(-.7deg);
+}
+
+.message-card:nth-child(even) {
+    transform: rotate(.7deg);
+}
+
+.message-card:nth-child(3n) {
+    color: #efbed4;
+}
+
+.message-card:nth-child(4n) {
+    color: #d8c7ea;
+}
+
+
+/* =========================
+   الجواب
+========================= */
+
+.letter-intro {
+    font-family: "Amiri", serif;
+
+    font-size: 18px;
+
+    color: #d2c5ca;
+
+    line-height: 2;
+}
+
+.letter-open {
+    margin: 10px 0 30px;
+}
+
+
+/* الورقة */
+
+.old-letter {
+
+    display: none;
+
+    position: relative;
+
+    max-width: 590px;
+
+    margin: 20px auto;
+
+    padding: 40px 28px 35px;
+
+    text-align: right;
+
+    color: #3d302b;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f3e5cb,
+            #ead5b5
+        );
+
+    box-shadow:
+        0 20px 50px
+        rgba(0, 0, 0, .75);
+
+    border-radius:
+        4px 7px 5px 8px;
+
+    transform-origin:
+        top center;
+}
+
+
+/* حافة قديمة */
+
+.old-letter::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 9px;
+
+    border:
+        1px dashed
+        rgba(91, 62, 47, .28);
+
+    pointer-events: none;
+}
+
+
+/* فتح الجواب */
+
+.old-letter.show {
+
+    display: block;
+
+    animation:
+        letterOpen .75s ease forwards;
+}
+
+@keyframes letterOpen {
+
+    from {
+        opacity: 0;
+
+        transform:
+            scaleY(.05)
+            rotateX(75deg);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            scaleY(1)
+            rotateX(0);
+    }
+}
+
+
+/* الختم */
+
+.letter-stamp {
+
+    position: absolute;
+
+    left: 18px;
+    top: 18px;
+
+    width: 45px;
+    height: 45px;
+
+    border:
+        2px solid
+        #9d6978;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    color: #9d6978;
+
+    transform: rotate(-12deg);
+}
+
+.letter-date {
+
+    font-family: "Amiri", serif;
+
+    color: #82685c;
+
+    text-align: left;
+
+    margin-bottom: 15px;
+}
+
+.old-letter h3 {
+
+    font-family: "Aref Ruqaa", serif;
+
+    text-align: center;
+
+    font-size: 32px;
+
+    font-weight: 400;
+
+    color: #704d59;
+
+    margin: 10px 0 20px;
+}
+
+
+/* =========================
+   خط الجواب
+========================= */
+
+.handwriting {
+
+    font-family: "Aref Ruqaa", serif;
+
+    font-size: 25px;
+
+    line-height: 1.85;
+
+    color: #3e302a;
+
+    direction: rtl;
+
+    text-align: right;
+
+    transform: rotate(-.3deg);
+}
+
+
+/* بدون سطور */
+
+.handwriting p {
+
+    margin: 0 0 14px;
+
+    padding: 0;
+
+    min-height: auto;
+
+    background-image: none;
+}
+
+
+/* كلمات مميزة */
+
+.handwriting .letter-highlight {
+
+    color: #713d4f !important;
+
+    font-size: 27px !important;
+
+    font-weight: 700;
+}
+
+
+/* الأبيات */
+
+.handwriting .poem {
+
+    color: #59404b !important;
+
+    text-align: center;
+
+    font-size: 26px !important;
+
+    line-height: 1.8;
+}
+
+
+/* الإمضاء */
+
+.handwriting .signature {
+
+    text-align: left;
+
+    color: #704455 !important;
+
+    font-family: "Aref Ruqaa", serif;
+
+    font-size: 19px !important;
+
+    line-height: 1.5;
+
+    margin-top: 28px;
+}
+
+
+/* =========================
+   الأغاني
+========================= */
+
+.song-card {
+
+    max-width: 480px;
+
+    margin: 25px auto;
+
+    padding: 30px 20px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, .12);
+
+    background:
+        rgba(10, 5, 15, .60);
+}
+
+.song-icon {
+    font-size: 42px;
+}
+
+.song-card h3 {
+
+    font-family: "Aref Ruqaa", serif;
+
+    font-size: 28px;
+
+    font-weight: 400;
+
+    color: #e8bed1;
+}
+
+.song-card p {
+
+    font-family: "Amiri", serif;
+
+    color: #d0c3c8;
+
+    font-size: 18px;
+
+    line-height: 2;
+}
+
+.funny-song {
+    transform: rotate(.5deg);
+}
+
+
+/* =========================
+   النهاية
+========================= */
+
+.ending {
+
+    min-height: 70vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+}
+
+.moon {
+    font-size: 75px;
+
+    margin-bottom: 20px;
+}
+
+.ending h2 {
+
+    font-family: "Aref Ruqaa", serif;
+
+    font-size: 36px;
+
+    font-weight: 400;
+
+    color: #e5bfd2;
+}
+
+.ending p {
+
+    font-family: "Amiri", serif;
+
+    color: #c7babf;
+
+    font-size: 17px;
+}
+
+.final-names {
+
+    font-family: "Aref Ruqaa", serif;
+
+    font-size: 40px;
+
+    color: #e7bfd2;
+
+    margin-top: 30px;
+}
+
+.final-date {
+
+    font-family: "Amiri", serif;
+
+    color: #c5b4bc;
+
+    margin-top: 8px;
+}
+
+.final-hearts {
+
+    margin-top: 20px;
+
+    letter-spacing: 7px;
+}
+
+
+/* =========================
+   الموبايل
+========================= */
+
+@media (max-width: 600px) {
+
+    .website {
+        padding: 8px;
+    }
+
+    .hero h1 {
+        font-size: 56px;
+    }
+
+    .sky-message {
+        font-size: 23px;
+    }
+
+    .memory-section,
+    .letter-section {
+        margin: 60px 0;
+
+        padding: 28px 8px;
+    }
+
+    .section-heading h2 {
+        font-size: 29px;
+    }
+
+    .photo-stack {
+        width: 98%;
+    }
+
+    .photo-stack img,
+    .memory-video {
+        width: 94%;
+
+        margin-top: -38px;
+    }
+
+    .old-letter {
+        padding:
+            35px 18px;
+    }
+
+    .handwriting {
+        font-size: 22px;
+
+        line-height: 1.8;
+    }
+
+    .handwriting .letter-highlight {
+        font-size: 25px !important;
+    }
+
+    .handwriting .poem {
+        font-size: 23px !important;
+    }
+
+    .handwriting .signature {
+        font-size: 18px !important;
+    }
+
+    .final-names {
+        font-size: 32px;
+    }
+}
