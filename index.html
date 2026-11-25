@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700&family=Marhey:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=8">
+<link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
 <div class="sky"></div>
@@ -65,7 +65,7 @@
 <div class="kicker">الفصل الثاني</div>
 <div class="section-heading"><span>📸</span><h2>صور من حكايتنا</h2><span>🤍</span></div>
 <p class="section-intro">صور صغيرة... وكل واحدة فيهم شايلة حكاية كبيرة.</p>
-<div class="swipe-hint">👈 اسحبي يمين وشمال 👉</div>
+<div class="swipe-hint">👈 اسحب يمين وشمال 👉</div>
 <div class="gallery">
 <figure class="shot reveal" data-i="1"><img src="media-1.jpeg" width="960" height="1280" alt="ذكرى 1" loading="lazy"></figure>
 <figure class="shot reveal" data-i="2"><img src="media-2.jpeg" width="853" height="1280" alt="ذكرى 2" loading="lazy"></figure>
@@ -104,7 +104,7 @@
 <div class="kicker">الفصل الرابع</div>
 <div class="section-heading"><span>💌</span><h2>رسائل منّا</h2><span>❤️</span></div>
 <p class="section-intro">كلام صغير قاله القلب في لحظات مختلفة...</p>
-<div class="swipe-hint">👈 اسحبي يمين وشمال 👉</div>
+<div class="swipe-hint">👈 اسحب يمين وشمال 👉</div>
 <div class="message-stack">
 
                 <div class="message-card">
@@ -186,6 +186,7 @@
 <form class="journal-form" id="journal-form">
 <h3>✍️ اكتبي ذكرى</h3>
 <textarea id="journal-text" rows="6" placeholder="اكتبي هنا..." required></textarea>
+<div class="journal-msg" id="journal-msg"></div>
 <div class="journal-actions"><button type="submit" class="journal-send">إرسال على واتساب 💌</button><button type="button" class="journal-cancel" id="journal-cancel">إلغاء</button></div>
 </form>
 </div>
@@ -195,7 +196,7 @@
 <div class="kicker">الفصل السادس</div>
 <div class="section-heading"><span>💌</span><h2>من قلبي إليك</h2><span>🤍</span></div>
 <p class="letter-intro">أول جواب كتبته ليك...</p>
-<button class="letter-open" onclick="openLetter()">💌 افتحي أول جواب مني</button>
+<button class="letter-open" onclick="openLetter()">💌 شوف أول جواب مني</button>
 <div class="old-letter" id="love-letter">
 <div class="letter-stamp">❤️</div>
 <div class="letter-date">30 May 2026</div>
@@ -398,7 +399,7 @@
 <section class="block" id="flying">
 <div class="kicker">الفصل السابع</div>
 <div class="section-heading"><span>✉️</span><h2>رسايل طايرة</h2><span>🕊️</span></div>
-<p class="section-intro">رسايل بتطير من قلبي لقلبك... اضغطي على الرسالة عشان تفتحيها.</p>
+<p class="section-intro">رسايل بتطير من قلبي لقلبك... اضغط على الرسالة عشان تفتحها.</p>
 <div class="fly-list" id="fly-list"></div>
 <div class="fly-modal" id="fly-modal" aria-hidden="true"><div class="fly-paper" id="fly-paper"><button type="button" class="fly-close" id="fly-close" aria-label="إغلاق">✕</button><div class="fly-pdate" id="fly-pdate"></div><h3 id="fly-ptitle"></h3><div class="fly-ptext" id="fly-ptext"></div></div></div>
 </section>
@@ -414,6 +415,10 @@
 </main>
 
 <div class="lightbox" id="lb" aria-hidden="true"><button class="lb-close" aria-label="إغلاق">✕</button><button class="lb-prev" aria-label="السابق">‹</button><img alt=""><button class="lb-next" aria-label="التالي">›</button></div>
-<script src="script.js?v=8"></script>
+<div class="quiz" id="quiz" aria-live="polite"><button type="button" class="quiz-x" id="quiz-x" aria-label="إغلاق">✕</button>
+<svg class="quiz-sticker" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="52" r="40" fill="#ffd54a" stroke="#e0a800" stroke-width="3"/><path d="M26 42 Q34 32 42 42" stroke="#5a3b00" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M58 42 Q66 32 74 42" stroke="#5a3b00" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M28 58 Q50 92 72 58 Z" fill="#7a1f2b" stroke="#5a3b00" stroke-width="3" stroke-linejoin="round"/><path d="M36 66 Q50 78 64 66 Q50 72 36 66Z" fill="#ff8aa5"/><circle cx="24" cy="56" r="6" fill="#ff9aa8" opacity=".7"/><circle cx="76" cy="56" r="6" fill="#ff9aa8" opacity=".7"/><path d="M18 40 q-4 8 0 14" stroke="#5ec7ff" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M82 40 q4 8 0 14" stroke="#5ec7ff" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+<div id="quiz-body"><div class="quiz-q">بتحب أمنية قد إيه النهارده؟ 😂</div>
+<form id="quiz-form"><input id="quiz-in" type="text" maxlength="300" placeholder="اكتب بصراحة 😅" autocomplete="off"><button type="submit" id="quiz-send">ابعت 😂</button></form></div></div>
+<script src="script.js?v=9"></script>
 </body>
 </html>

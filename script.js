@@ -17,7 +17,7 @@ function openLetter() {
 
     if (letter.classList.contains("show")) {
         letter.classList.remove("show");
-        button.textContent = "💌 افتحي أول جواب مني";
+        button.textContent = "💌 شوف أول جواب مني";
     } else {
         letter.classList.add("show");
         button.textContent = "💌 اقفل الرسالة";
@@ -195,79 +195,150 @@ updateCounter();
     });
 })();
 
-/* ===== يومياتنا =====
-   لإضافة ذكرى جديدة: أضف سطرا جديدا في القائمة تحت بنفس الشكل. الترتيب بيتعمل تلقائيا (الأحدث فوق).
-   { date: "YYYY-MM-DD", title: "العنوان", text: "النص" } */
-var JOURNAL = [
-    { date: "2026-05-30", title: "بداية الحكاية", text: "ومن يومها... بقى في حكاية اسمها أُمـنـيـة وعَبـدُالله. ❤️" }
+/* ===== الباك إند (Google Apps Script) ===== */
+var API_URL = "https://script.google.com/macros/s/AKfycbwoCZuUhumgz6j_UymYYVFUXNsLZjnfVc8In8DLHq4Jcm42Avro8KceD8QzboSpTTLP/exec";
+var API_SECRET = "7696d4b2c626ae8b2aa3b595";
+function apiPost(o) {
+    o.secret = API_SECRET;
+    return fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(o) })
+        .then(function (r) { return r.json(); });
+}
+var MONTHS_AR = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+function fmtDate(d) { var p = d.split("-"); return parseInt(p[2], 10) + " " + MONTHS_AR[parseInt(p[1], 10) - 1] + " " + p[0]; }
+function todayISO() { var n = new Date(); return n.getFullYear() + "-" + ("0" + (n.getMonth() + 1)).slice(-2) + "-" + ("0" + n.getDate()).slice(-2); }
+
+/* ===== يومياتنا ===== (الإدخالات الجديدة بتيجي من الشيت تلقائيا) */
+var JOURNAL_SEED = [
+    { id: "seed1", date: "2026-05-30", title: "بداية الحكاية", text: "ومن يومها... بقى في حكاية اسمها أُمـنـيـة وعَبـدُالله. ❤️" }
 ];
-(function () {
+/* ===== رسايل طايرة ===== (بتيجي من الشيت) */
+var FLYING_SEED = [];
+
+var journalEntries = JOURNAL_SEED.slice(), flyingEntries = FLYING_SEED.slice();
+function renderJournal() {
     var list = document.getElementById("journal-list");
     if (!list) return;
-    var months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
-    JOURNAL.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; }).forEach(function (e) {
-        var p = e.date.split("-"), c = document.createElement("article");
-        c.className = "journal-card reveal";
-        var d = document.createElement("div"); d.className = "journal-date";
-        d.textContent = "📅 " + parseInt(p[2], 10) + " " + months[parseInt(p[1], 10) - 1] + " " + p[0];
-        var t = document.createElement("h4"); t.textContent = e.title;
-        var x = document.createElement("p"); x.textContent = e.text;
-        c.appendChild(d); c.appendChild(t); c.appendChild(x); list.appendChild(c);
-        if (window.IntersectionObserver === undefined) c.classList.add("in");
+    list.innerHTML = "";
+    journalEntries.slice().sort(function (a, b) { return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); }).forEach(function (e) {
+        var c = document.createElement("article"); c.className = "journal-card";
+        var d = document.createElement("div"); d.className = "journal-date"; d.textContent = "📅 " + fmtDate(e.date);
+        c.appendChild(d);
+        if (e.title) { var t = document.createElement("h4"); t.textContent = e.title; c.appendChild(t); }
+        var x = document.createElement("p"); x.textContent = e.text; c.appendChild(x);
+        list.appendChild(c);
     });
-    var modal = document.getElementById("journal-modal"), ta = document.getElementById("journal-text");
-    function open(v) { modal.classList.toggle("open", v); modal.setAttribute("aria-hidden", v ? "false" : "true"); if (v) setTimeout(function () { ta.focus(); }, 100); }
-    document.getElementById("journal-add").addEventListener("click", function () { open(true); });
-    document.getElementById("journal-cancel").addEventListener("click", function () { open(false); });
-    modal.addEventListener("click", function (e) { if (e.target === modal) open(false); });
-    document.getElementById("journal-form").addEventListener("submit", function (e) {
-        e.preventDefault();
-        var v = ta.value.trim(); if (!v) return;
-        window.open("https://wa.me/16508702892?text=" + encodeURIComponent(v), "_blank");
-        ta.value = ""; open(false);
-    });
-})();
-
-/* ===== رسايل طايرة =====
-   لإضافة رسالة جديدة: أضف سطرا في القائمة تحت. الأحدث بيظهر لوحده في الأعلى بشارة "جديد".
-   { date: "YYYY-MM-DD", title: "العنوان", text: "النص (سطر جديد = \n)" } */
-var FLYING = [
-];
-(function () {
+}
+function renderFlying() {
     var list = document.getElementById("fly-list");
     if (!list) return;
-    var months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
-    function fmt(d) { var p = d.split("-"); return parseInt(p[2], 10) + " " + months[parseInt(p[1], 10) - 1] + " " + p[0]; }
+    list.innerHTML = "";
     var modal = document.getElementById("fly-modal");
     function show(e) {
-        document.getElementById("fly-pdate").textContent = "📅 " + fmt(e.date);
-        document.getElementById("fly-ptitle").textContent = e.title;
+        document.getElementById("fly-pdate").textContent = "📅 " + fmtDate(e.date);
+        document.getElementById("fly-ptitle").textContent = e.title || "";
         document.getElementById("fly-ptext").textContent = e.text;
         modal.classList.add("open"); modal.setAttribute("aria-hidden", "false");
     }
-    function hide() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); }
-    document.getElementById("fly-close").addEventListener("click", hide);
-    modal.addEventListener("click", function (ev) { if (ev.target === modal) hide(); });
-    var items = FLYING.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    var items = flyingEntries.slice().sort(function (a, b) { return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); });
     if (!items.length) {
-        var ph = document.createElement("div");
-        ph.className = "fly-empty";
+        var ph = document.createElement("div"); ph.className = "fly-empty";
         ph.innerHTML = '<div class="fly-env">✉️</div><p>أول رسالة طايرة جاية قريب ✉️</p>';
-        list.appendChild(ph);
-        return;
+        list.appendChild(ph); return;
     }
     items.forEach(function (e, i) {
-        var b = document.createElement("button");
-        b.type = "button";
-        b.className = "fly-item" + (i === 0 ? " newest" : "");
+        var b = document.createElement("button"); b.type = "button"; b.className = "fly-item" + (i === 0 ? " newest" : "");
         var env = document.createElement("span"); env.className = "fly-env"; env.textContent = "✉️";
         var box = document.createElement("span"); box.className = "fly-meta";
-        var t = document.createElement("strong"); t.textContent = e.title;
-        var d = document.createElement("small"); d.textContent = fmt(e.date);
-        box.appendChild(t); box.appendChild(d);
-        b.appendChild(env); b.appendChild(box);
+        var t = document.createElement("strong"); t.textContent = e.title || "رسالة طايرة";
+        var d = document.createElement("small"); d.textContent = fmtDate(e.date);
+        box.appendChild(t); box.appendChild(d); b.appendChild(env); b.appendChild(box);
         if (i === 0) { var bd = document.createElement("span"); bd.className = "fly-badge"; bd.textContent = "جديد"; b.appendChild(bd); }
         b.addEventListener("click", function () { show(e); });
         list.appendChild(b);
     });
+}
+renderJournal(); renderFlying();
+(function () {
+    var modal = document.getElementById("fly-modal");
+    if (modal) {
+        function hide() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); }
+        document.getElementById("fly-close").addEventListener("click", hide);
+        modal.addEventListener("click", function (ev) { if (ev.target === modal) hide(); });
+    }
+    /* تحميل الإدخالات من الشيت */
+    fetch(API_URL).then(function (r) { return r.json(); }).then(function (j) {
+        if (!j || !j.ok) return;
+        var ex = {}; journalEntries.forEach(function (e) { ex[e.id] = 1; });
+        j.entries.forEach(function (e) {
+            if (e.kind === "journal" && !ex[e.id]) journalEntries.push(e);
+            if (e.kind === "flying") flyingEntries.push(e);
+        });
+        renderJournal(); renderFlying();
+    }).catch(function () {});
+
+    /* نموذج اكتبي ذكرى */
+    var jm = document.getElementById("journal-modal"), ta = document.getElementById("journal-text"), msg = document.getElementById("journal-msg");
+    if (jm) {
+        function open(v) { jm.classList.toggle("open", v); jm.setAttribute("aria-hidden", v ? "false" : "true"); msg.textContent = ""; if (v) setTimeout(function () { ta.focus(); }, 100); }
+        document.getElementById("journal-add").addEventListener("click", function () { open(true); });
+        document.getElementById("journal-cancel").addEventListener("click", function () { open(false); });
+        jm.addEventListener("click", function (e) { if (e.target === jm) open(false); });
+        document.getElementById("journal-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            var v = ta.value.trim(); if (!v) return;
+            var btn = document.querySelector(".journal-send"); btn.disabled = true; msg.textContent = "بنحفظها... ⏳";
+            apiPost({ kind: "journal", date: todayISO(), title: "", text: v }).then(function (r) {
+                btn.disabled = false;
+                if (r && r.ok) { journalEntries.push({ id: r.id, date: todayISO(), title: "", text: v }); renderJournal(); ta.value = ""; open(false); }
+                else { msg.textContent = "حصلت مشكلة، جربي تاني 🙏"; }
+            }).catch(function () { btn.disabled = false; msg.textContent = "حصلت مشكلة في النت، جربي تاني 🙏"; });
+        });
+    }
+
+    /* قصة الشهور: فتح وقفل، واحد بس مفتوح */
+    var ms = document.querySelectorAll("#story .milestone");
+    ms.forEach(function (m, i) {
+        m.classList.add("acc");
+        var head = document.createElement("button"); head.type = "button"; head.className = "acc-head";
+        var k = m.querySelector(".kicker.small"), dte = m.querySelector(".memory-date"), h3 = m.querySelector("h3");
+        var label = document.createElement("span"); label.className = "acc-label";
+        if (k) label.appendChild(k);
+        if (dte) label.appendChild(dte);
+        var chev = document.createElement("span"); chev.className = "acc-chev"; chev.textContent = "⌄";
+        head.appendChild(label); head.appendChild(chev);
+        var body = m.querySelector(".memory-text"); m.insertBefore(head, body);
+        head.addEventListener("click", function () {
+            var was = m.classList.contains("open");
+            ms.forEach(function (o) { o.classList.remove("open"); });
+            if (!was) m.classList.add("open");
+        });
+        if (i === 0) m.classList.add("open");
+    });
+    var story = document.querySelector("#story .timeline");
+    if (story) {
+        var nx = document.createElement("article"); nx.className = "milestone soon reveal";
+        nx.innerHTML = '<div class="dot"></div><div class="soon-card"><span class="soon-ico">🌱</span><div>الشهر الجاي...</div><small>الحكاية لسه بتكمل ❤️</small></div>';
+        story.appendChild(nx);
+    }
+
+    /* كارت السؤال الظريف */
+    try {
+        var day = todayISO();
+        if (localStorage.getItem("qz-day") !== day) {
+            var q = document.getElementById("quiz");
+            setTimeout(function () { q.classList.add("show"); }, 4000);
+            var done = function () { try { localStorage.setItem("qz-day", day); } catch (e) {} q.classList.remove("show"); };
+            document.getElementById("quiz-x").addEventListener("click", done);
+            document.getElementById("quiz-form").addEventListener("submit", function (e) {
+                e.preventDefault();
+                var v = document.getElementById("quiz-in").value.trim(); if (!v) return;
+                var b = document.getElementById("quiz-send"); b.disabled = true;
+                apiPost({ kind: "answer", date: day, title: "بتحب أمنية قد إيه النهارده؟", text: v }).then(function () {
+                    document.getElementById("quiz-body").innerHTML = '<div class="quiz-thanks">وصلت! 😂❤️<br><small>أمنية هتعرف على طول</small></div>';
+                    try { localStorage.setItem("qz-day", day); } catch (e) {}
+                    setTimeout(function () { q.classList.remove("show"); }, 2600);
+                }).catch(function () { b.disabled = false; b.textContent = "جرب تاني 😅"; });
+            });
+        }
+    } catch (e) {}
 })();
