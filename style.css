@@ -1367,3 +1367,50 @@ body::before { content: none; }
 .journal-actions button { padding: 11px 20px; border-radius: 26px; border: 0; font: 700 16px inherit; font-family: inherit; cursor: pointer; }
 .journal-send { background: linear-gradient(135deg, #25d366, #12a150); color: #fff; }
 .journal-cancel { background: rgba(255,255,255,.12); color: #fff; }
+
+/* ===== رسايل طايرة ===== */
+#flying { background: radial-gradient(120% 60% at 50% 0%, rgba(70,110,190,.40), transparent 70%), #070b16; overflow: hidden; }
+.fly-list { width: min(92%, 440px); margin: 24px auto 0; display: flex; flex-direction: column; gap: 14px; }
+.fly-empty { padding: 34px 20px; border: 1px dashed rgba(255,190,220,.4); border-radius: 22px; background: rgba(255,255,255,.04); }
+.fly-empty p { margin: 8px 0 0; font-size: 19px; }
+.fly-env { font-size: 40px; display: inline-block; animation: flyenv 3.4s ease-in-out infinite; }
+@keyframes flyenv { 0%,100% { transform: translate(0,0) rotate(-6deg); } 50% { transform: translate(10px,-12px) rotate(6deg); } }
+.fly-item { position: relative; display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 18px; text-align: right; border-radius: 18px; cursor: pointer; font-family: inherit; color: #fff; background: rgba(255,255,255,.06); border: 1px solid rgba(255,190,220,.25); }
+.fly-item .fly-env { font-size: 28px; animation: none; }
+.fly-meta { display: flex; flex-direction: column; gap: 2px; }
+.fly-meta strong { font-size: 18px; } .fly-meta small { opacity: .75; font-size: 13px; }
+.fly-item.newest { padding: 26px 18px; background: linear-gradient(135deg, rgba(255,90,150,.35), rgba(120,90,255,.35)); border-color: rgba(255,200,230,.6); box-shadow: 0 0 30px rgba(255,110,170,.35); }
+.fly-item.newest .fly-env { font-size: 46px; animation: flyenv 3.4s ease-in-out infinite; }
+.fly-item.newest .fly-meta strong { font-size: 21px; }
+.fly-badge { position: absolute; top: 10px; left: 12px; padding: 3px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; background: #ff4f93; animation: pulse 1.8s infinite; }
+.fly-modal { position: fixed; inset: 0; z-index: 10000; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(5,3,12,.85); }
+.fly-modal.open { display: flex; }
+.fly-paper { position: relative; width: min(100%, 440px); max-height: 85vh; overflow-y: auto; padding: 34px 24px 28px; border-radius: 6px; text-align: right; background: #f3e8d6; color: #3a2417; box-shadow: 0 24px 60px rgba(0,0,0,.7); animation: letterOpen .6s ease; }
+.fly-paper h3 { margin: 6px 0 12px; font-family: "Aref Ruqaa", serif; font-size: 25px; color: #7a2447; }
+.fly-pdate { font-size: 14px; opacity: .7; }
+.fly-ptext { white-space: pre-wrap; font-size: 19px; line-height: 2.1; font-family: "Amiri", serif; }
+.fly-close { position: absolute; top: 8px; left: 10px; border: 0; background: transparent; font-size: 22px; color: #7a2447; cursor: pointer; }
+
+/* ===== v8: ورقة الجواب رومانسية ===== */
+.old-letter, .fly-paper {
+    background: radial-gradient(120% 80% at 50% 0%, #fff4f6 0%, #ffe1e9 55%, #f9cfdc 100%);
+    color: #5a2a3d; border-radius: 26px;
+    box-shadow: 0 22px 55px rgba(0,0,0,.65), 0 0 0 6px rgba(255,214,228,.18), inset 0 0 40px rgba(255,170,200,.35);
+}
+.old-letter { padding: 58px 24px 34px; max-width: 560px; border: 1px solid #f1a9c0; }
+.old-letter::before { inset: 10px; border: 2px dotted rgba(214,106,148,.55); border-radius: 20px; }
+.old-letter::after { content: "🌸  ·  ❤️  ·  🌸"; position: absolute; bottom: 12px; left: 0; right: 0; text-align: center; font-size: 14px; letter-spacing: 6px; opacity: .8; }
+.old-letter .letter-stamp {
+    left: 50%; top: -22px; margin-left: -29px; width: 58px; height: 58px; font-size: 26px;
+    color: #fff; border: 3px solid #b3173f; background: radial-gradient(circle at 35% 30%, #ff6f8f, #c2184a 70%);
+    box-shadow: 0 6px 14px rgba(120,0,40,.5), inset 0 0 8px rgba(255,255,255,.3); transform: rotate(-8deg);
+}
+.old-letter .letter-date { color: #a0506c; }
+.old-letter h3, .fly-paper h3 { font-family: "Marhey", "Aref Ruqaa", cursive; font-weight: 600; color: #b3225a; font-size: 27px; text-shadow: 0 1px 0 rgba(255,255,255,.7); }
+.old-letter .handwriting { color: #5a2a3d; font-size: 23px; line-height: 2; transform: none; }
+.old-letter .handwriting .letter-highlight { color: #c2185b !important; font-size: 25px !important; }
+.old-letter .handwriting .poem { color: #8a3358 !important; }
+.fly-paper { border: 1px solid #f1a9c0; }
+.fly-ptext { font-family: "Aref Ruqaa", "Amiri", serif; color: #5a2a3d; }
+.fly-pdate { color: #a0506c; }
+@media (max-width: 600px) { .old-letter { padding: 54px 18px 40px; } .old-letter .handwriting { font-size: 21px; } }

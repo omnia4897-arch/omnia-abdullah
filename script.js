@@ -17,7 +17,7 @@ function openLetter() {
 
     if (letter.classList.contains("show")) {
         letter.classList.remove("show");
-        button.textContent = "💌 افتحي رسالة حبيبك النهارده";
+        button.textContent = "💌 افتحي أول جواب مني";
     } else {
         letter.classList.add("show");
         button.textContent = "💌 اقفل الرسالة";
@@ -225,5 +225,49 @@ var JOURNAL = [
         var v = ta.value.trim(); if (!v) return;
         window.open("https://wa.me/16508702892?text=" + encodeURIComponent(v), "_blank");
         ta.value = ""; open(false);
+    });
+})();
+
+/* ===== رسايل طايرة =====
+   لإضافة رسالة جديدة: أضف سطرا في القائمة تحت. الأحدث بيظهر لوحده في الأعلى بشارة "جديد".
+   { date: "YYYY-MM-DD", title: "العنوان", text: "النص (سطر جديد = \n)" } */
+var FLYING = [
+];
+(function () {
+    var list = document.getElementById("fly-list");
+    if (!list) return;
+    var months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+    function fmt(d) { var p = d.split("-"); return parseInt(p[2], 10) + " " + months[parseInt(p[1], 10) - 1] + " " + p[0]; }
+    var modal = document.getElementById("fly-modal");
+    function show(e) {
+        document.getElementById("fly-pdate").textContent = "📅 " + fmt(e.date);
+        document.getElementById("fly-ptitle").textContent = e.title;
+        document.getElementById("fly-ptext").textContent = e.text;
+        modal.classList.add("open"); modal.setAttribute("aria-hidden", "false");
+    }
+    function hide() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); }
+    document.getElementById("fly-close").addEventListener("click", hide);
+    modal.addEventListener("click", function (ev) { if (ev.target === modal) hide(); });
+    var items = FLYING.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    if (!items.length) {
+        var ph = document.createElement("div");
+        ph.className = "fly-empty";
+        ph.innerHTML = '<div class="fly-env">✉️</div><p>أول رسالة طايرة جاية قريب ✉️</p>';
+        list.appendChild(ph);
+        return;
+    }
+    items.forEach(function (e, i) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "fly-item" + (i === 0 ? " newest" : "");
+        var env = document.createElement("span"); env.className = "fly-env"; env.textContent = "✉️";
+        var box = document.createElement("span"); box.className = "fly-meta";
+        var t = document.createElement("strong"); t.textContent = e.title;
+        var d = document.createElement("small"); d.textContent = fmt(e.date);
+        box.appendChild(t); box.appendChild(d);
+        b.appendChild(env); b.appendChild(box);
+        if (i === 0) { var bd = document.createElement("span"); bd.className = "fly-badge"; bd.textContent = "جديد"; b.appendChild(bd); }
+        b.addEventListener("click", function () { show(e); });
+        list.appendChild(b);
     });
 })();

@@ -7,8 +7,8 @@
 <title>أُمـنـيـة &amp; عَبـدُالله ❤️</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=6">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700&family=Marhey:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 <div class="sky"></div>
@@ -16,7 +16,7 @@
 <canvas id="hearts" aria-hidden="true"></canvas>
 
 <nav class="nav" id="nav" aria-label="الأقسام">
-<a href="#top">البداية</a><a href="#story">الحكاية</a><a href="#photos">الصور</a><a href="#videos">الفيديوهات</a><a href="#messages">الرسائل</a><a href="#journal">يومياتنا</a><a href="#letter">الجواب</a></nav>
+<a href="#top">البداية</a><a href="#story">الحكاية</a><a href="#photos">الصور</a><a href="#videos">الفيديوهات</a><a href="#messages">الرسائل</a><a href="#journal">يومياتنا</a><a href="#letter">أول جواب</a><a href="#flying">رسايل طايرة</a></nav>
 
 <main class="website" id="top">
 
@@ -194,8 +194,8 @@
 <section class="block letter-section" id="letter">
 <div class="kicker">الفصل السادس</div>
 <div class="section-heading"><span>💌</span><h2>من قلبي إليك</h2><span>🤍</span></div>
-<p class="letter-intro">جواب صغير من قلبي ليك...</p>
-<button class="letter-open" onclick="openLetter()">💌 افتحي رسالة حبيبك النهارده</button>
+<p class="letter-intro">أول جواب كتبته ليك...</p>
+<button class="letter-open" onclick="openLetter()">💌 افتحي أول جواب مني</button>
 <div class="old-letter" id="love-letter">
 <div class="letter-stamp">❤️</div>
 <div class="letter-date">30 May 2026</div>
@@ -395,6 +395,14 @@
 
 
 
+<section class="block" id="flying">
+<div class="kicker">الفصل السابع</div>
+<div class="section-heading"><span>✉️</span><h2>رسايل طايرة</h2><span>🕊️</span></div>
+<p class="section-intro">رسايل بتطير من قلبي لقلبك... اضغطي على الرسالة عشان تفتحيها.</p>
+<div class="fly-list" id="fly-list"></div>
+<div class="fly-modal" id="fly-modal" aria-hidden="true"><div class="fly-paper" id="fly-paper"><button type="button" class="fly-close" id="fly-close" aria-label="إغلاق">✕</button><div class="fly-pdate" id="fly-pdate"></div><h3 id="fly-ptitle"></h3><div class="fly-ptext" id="fly-ptext"></div></div></div>
+</section>
+
 <section class="ending block">
 <div class="moon">🌙</div>
 <h2>ولسه الحكاية في أولها...</h2>
@@ -406,6 +414,6 @@
 </main>
 
 <div class="lightbox" id="lb" aria-hidden="true"><button class="lb-close" aria-label="إغلاق">✕</button><button class="lb-prev" aria-label="السابق">‹</button><img alt=""><button class="lb-next" aria-label="التالي">›</button></div>
-<script src="script.js?v=6"></script>
+<script src="script.js?v=8"></script>
 </body>
 </html>
