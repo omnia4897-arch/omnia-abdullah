@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 <div class="sky"></div>
@@ -16,8 +16,7 @@
 <canvas id="hearts" aria-hidden="true"></canvas>
 
 <nav class="nav" id="nav" aria-label="الأقسام">
-<a href="#top">البداية</a><a href="#story">الحكاية</a><a href="#photos">الصور</a><a href="#videos">الفيديوهات</a><a href="#messages">الرسائل</a><a href="#letter">الجواب</a><a href="#songs">أغانينا</a>
-</nav>
+<a href="#top">البداية</a><a href="#story">الحكاية</a><a href="#photos">الصور</a><a href="#videos">الفيديوهات</a><a href="#messages">الرسائل</a><a href="#journal">يومياتنا</a><a href="#letter">الجواب</a></nav>
 
 <main class="website" id="top">
 
@@ -177,8 +176,23 @@
 <div class="love-note reveal"><p>حبك صالحني عالدنيا ❤️🌍 صباح الخير على الشخص الي من ساعة ما دخل في حياتي وأنا حاسة إن حتى الأيام الوحشة بتهون عشان انت فيها 🥺❤️ ربنا يخليك ليا ويفضل قلبك دايما اقرب مكان لقلبي 🫂❤️ وربنا يا حبيبي يفتحلك كل أبواب الخير والرزق ويريح قلبك ويحققلك كل حاجة نفسك فيه ويباركلك في شغلك ووقتك وتعبك ويجعل كل خطوة بتاخدها في حياتك سبب في حاجة أحلى جاية لك 🤲🏻❤️ يرزقك راحة بال ما بعدها تعب ويجعل نصيبك من الدنيا جميل ومن الآخرة أجمل ويجمعني بيك دايما على خير ويجعلنا سكن وراحة وأمان لبعض العمر كله 🥹❤️🌍</p></div>
 </section>
 
-<section class="block letter-section" id="letter">
+<section class="block" id="journal">
 <div class="kicker">الفصل الخامس</div>
+<div class="section-heading"><span>📖</span><h2>يومياتنا</h2><span>🤍</span></div>
+<p class="section-intro">أيام وذكريات صغيرة بنكتبها واحدة واحدة... الأحدث فوق.</p>
+<button class="journal-add" id="journal-add" type="button">✍️ اكتبي ذكرى</button>
+<div class="journal-list" id="journal-list"></div>
+<div class="journal-modal" id="journal-modal" aria-hidden="true">
+<form class="journal-form" id="journal-form">
+<h3>✍️ اكتبي ذكرى</h3>
+<textarea id="journal-text" rows="6" placeholder="اكتبي هنا..." required></textarea>
+<div class="journal-actions"><button type="submit" class="journal-send">إرسال على واتساب 💌</button><button type="button" class="journal-cancel" id="journal-cancel">إلغاء</button></div>
+</form>
+</div>
+</section>
+
+<section class="block letter-section" id="letter">
+<div class="kicker">الفصل السادس</div>
 <div class="section-heading"><span>💌</span><h2>من قلبي إليك</h2><span>🤍</span></div>
 <p class="letter-intro">جواب صغير من قلبي ليك...</p>
 <button class="letter-open" onclick="openLetter()">💌 افتحي رسالة حبيبك النهارده</button>
@@ -379,57 +393,7 @@
 </div>
 </section>
 
-<section class="block" id="songs">
-<div class="kicker">الفصل السادس</div>
-<div class="section-heading"><span>🎵</span><h2>أغانينا</h2><span>🤍</span></div>
-<div class="song-card">
 
-                <div class="song-icon">
-                    🎧
-                </div>
-
-                <h3>
-                    الأغنية اللي بحس إنها شبهنا
-                </h3>
-
-                <p>
-                    الأغنية اللي بحس إنها شبه حكايتنا.
-                </p>
-
-                <a class="song-btn"
-                    href="https://www.youtube.com/watch?v=5a1figb7j8E&list=RD5a1figb7j8E&start_radio=1"
-                    target="_blank" rel="noopener noreferrer">
-                    اسمعيها معانا 🎵
-                </a>
-
-            </div>
-
-
-            <div class="song-card funny-song">
-
-                <div class="song-icon">
-                    😂🎧
-                </div>
-
-                <h3>
-                    الساوند اللي كان مستخبي 😂
-                </h3>
-
-                <p>
-                    فضلتي تحبيه سنة ونص...
-                    وهو مكنش واخد باله إن أعماله المحلّية
-                    هتظهر في يوم من الأيام 😂❤️
-                </p>
-
-                <a class="song-btn"
-                    href="https://youtube.com/shorts/O0etM-z04To?si=JcbCKT5KjDnDYqzB"
-                    target="_blank" rel="noopener noreferrer">
-                    شغّل الساوند 😂
-                </a>
-
-            </div>
-
-        </section>
 
 <section class="ending block">
 <div class="moon">🌙</div>
@@ -442,6 +406,6 @@
 </main>
 
 <div class="lightbox" id="lb" aria-hidden="true"><button class="lb-close" aria-label="إغلاق">✕</button><button class="lb-prev" aria-label="السابق">‹</button><img alt=""><button class="lb-next" aria-label="التالي">›</button></div>
-<script src="script.js?v=4"></script>
+<script src="script.js?v=6"></script>
 </body>
 </html>

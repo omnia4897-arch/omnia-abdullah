@@ -194,3 +194,36 @@ updateCounter();
         }, { passive: true });
     });
 })();
+
+/* ===== يومياتنا =====
+   لإضافة ذكرى جديدة: أضف سطرا جديدا في القائمة تحت بنفس الشكل. الترتيب بيتعمل تلقائيا (الأحدث فوق).
+   { date: "YYYY-MM-DD", title: "العنوان", text: "النص" } */
+var JOURNAL = [
+    { date: "2026-05-30", title: "بداية الحكاية", text: "ومن يومها... بقى في حكاية اسمها أُمـنـيـة وعَبـدُالله. ❤️" }
+];
+(function () {
+    var list = document.getElementById("journal-list");
+    if (!list) return;
+    var months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+    JOURNAL.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; }).forEach(function (e) {
+        var p = e.date.split("-"), c = document.createElement("article");
+        c.className = "journal-card reveal";
+        var d = document.createElement("div"); d.className = "journal-date";
+        d.textContent = "📅 " + parseInt(p[2], 10) + " " + months[parseInt(p[1], 10) - 1] + " " + p[0];
+        var t = document.createElement("h4"); t.textContent = e.title;
+        var x = document.createElement("p"); x.textContent = e.text;
+        c.appendChild(d); c.appendChild(t); c.appendChild(x); list.appendChild(c);
+        if (window.IntersectionObserver === undefined) c.classList.add("in");
+    });
+    var modal = document.getElementById("journal-modal"), ta = document.getElementById("journal-text");
+    function open(v) { modal.classList.toggle("open", v); modal.setAttribute("aria-hidden", v ? "false" : "true"); if (v) setTimeout(function () { ta.focus(); }, 100); }
+    document.getElementById("journal-add").addEventListener("click", function () { open(true); });
+    document.getElementById("journal-cancel").addEventListener("click", function () { open(false); });
+    modal.addEventListener("click", function (e) { if (e.target === modal) open(false); });
+    document.getElementById("journal-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var v = ta.value.trim(); if (!v) return;
+        window.open("https://wa.me/16508702892?text=" + encodeURIComponent(v), "_blank");
+        ta.value = ""; open(false);
+    });
+})();

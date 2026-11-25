@@ -1348,3 +1348,22 @@ body::before { content: none; }
 .pop-emoji { position: fixed; z-index: 9999; pointer-events: none; animation: popup 1.6s ease-out forwards; }
 @keyframes popup { to { transform: translateY(-130px) scale(1.4); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .letter-open, .letter-intro, .swipe-hint { animation: none; } }
+
+/* ===== يومياتنا ===== */
+#journal { background: radial-gradient(120% 60% at 50% 0%, rgba(120,90,170,.40), transparent 70%), #0b0814; }
+.journal-add { margin: 16px auto 8px; padding: 13px 26px; font: 700 18px inherit; font-family: inherit; color: #fff; border: 0; border-radius: 34px; cursor: pointer; background: linear-gradient(135deg, #9b6bff, #ff6fa5); box-shadow: 0 10px 26px rgba(0,0,0,.5); }
+.journal-list { width: min(92%, 460px); margin: 22px auto 0; display: flex; flex-direction: column; gap: 18px; }
+.journal-card { text-align: right; padding: 22px 20px; border-radius: 20px; background: linear-gradient(160deg, rgba(110,70,160,.35), rgba(50,25,80,.55)); border: 1px solid rgba(255,190,220,.28); box-shadow: 0 14px 30px rgba(0,0,0,.5); position: relative; }
+.journal-card::before { content: "🌙"; position: absolute; left: 16px; top: 14px; opacity: .8; }
+.journal-date { font-size: 14px; opacity: .85; margin-bottom: 6px; }
+.journal-card h4 { margin: 4px 0 8px; font-size: 22px; font-family: "Aref Ruqaa", serif; color: #ffd3e6; }
+.journal-card p { margin: 0; font-size: 18px; line-height: 2; }
+.journal-modal { position: fixed; inset: 0; z-index: 10000; display: none; align-items: center; justify-content: center; background: rgba(5,2,10,.82); padding: 18px; }
+.journal-modal.open { display: flex; }
+.journal-form { width: min(100%, 420px); padding: 22px; border-radius: 22px; background: #1a0f26; border: 1px solid rgba(255,190,220,.35); box-shadow: 0 20px 50px rgba(0,0,0,.7); text-align: center; }
+.journal-form h3 { margin: 0 0 12px; font-family: "Aref Ruqaa", serif; font-size: 24px; color: #ffd3e6; }
+.journal-form textarea { width: 100%; box-sizing: border-box; padding: 12px; border-radius: 14px; border: 1px solid rgba(255,190,220,.35); background: #0d0716; color: #fff; font: 17px/1.8 inherit; font-family: inherit; resize: vertical; direction: rtl; }
+.journal-actions { display: flex; gap: 10px; margin-top: 14px; justify-content: center; }
+.journal-actions button { padding: 11px 20px; border-radius: 26px; border: 0; font: 700 16px inherit; font-family: inherit; cursor: pointer; }
+.journal-send { background: linear-gradient(135deg, #25d366, #12a150); color: #fff; }
+.journal-cancel { background: rgba(255,255,255,.12); color: #fff; }
