@@ -17,7 +17,7 @@ function openLetter() {
 
     if (letter.classList.contains("show")) {
         letter.classList.remove("show");
-        button.textContent = "💌 افتح رسالتي";
+        button.textContent = "💌 افتحي رسالة حبيبك النهارده";
     } else {
         letter.classList.add("show");
         button.textContent = "💌 اقفل الرسالة";
@@ -146,4 +146,51 @@ updateCounter();
         requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
+})();
+
+/* ===== تفاعل إضافي ===== */
+(function () {
+    function burst(x, y, set) {
+        for (var i = 0; i < 9; i++) {
+            var s = document.createElement("span");
+            s.className = "pop-emoji";
+            s.textContent = set[Math.floor(Math.random() * set.length)];
+            s.style.left = (x + (Math.random() * 80 - 40)) + "px";
+            s.style.top = (y + (Math.random() * 20 - 10)) + "px";
+            s.style.fontSize = (16 + Math.random() * 18) + "px";
+            s.style.animationDuration = (1.1 + Math.random() * 1.2) + "s";
+            document.body.appendChild(s);
+            setTimeout((function (el) { return function () { el.remove(); }; })(s), 2600);
+        }
+    }
+    document.addEventListener("click", function (e) {
+        var c = e.target.closest && e.target.closest(".message-card");
+        if (c) { burst(e.clientX, e.clientY, ["❤️", "💖", "🤍", "✨", "💕"]); c.classList.add("tapped"); setTimeout(function () { c.classList.remove("tapped"); }, 500); }
+        var b = e.target.closest && e.target.closest(".letter-open");
+        if (b) { burst(e.clientX, e.clientY, ["💌", "❤️", "🌹", "💖", "✨", "🦋", "🥰"]); }
+    });
+    /* إيموجي بتطلع في قسم الجواب */
+    var sec = document.getElementById("letter"), on = false;
+    if (sec && "IntersectionObserver" in window) {
+        new IntersectionObserver(function (en) { on = en[0].isIntersecting; }, { threshold: 0.15 }).observe(sec);
+        var set = ["💌", "❤️", "🌹", "✨", "🦋", "💖", "🥰", "🌸", "💕", "🕊️"];
+        setInterval(function () {
+            if (!on || document.hidden) return;
+            var s = document.createElement("span");
+            s.className = "float-emoji";
+            s.textContent = set[Math.floor(Math.random() * set.length)];
+            s.style.left = (Math.random() * 90 + 2) + "%";
+            s.style.fontSize = (18 + Math.random() * 20) + "px";
+            s.style.animationDuration = (5 + Math.random() * 4) + "s";
+            sec.appendChild(s);
+            setTimeout(function () { s.remove(); }, 9500);
+        }, 700);
+    }
+    /* إخفاء تلميح السحب بعد أول سحب */
+    document.querySelectorAll(".gallery,.message-stack").forEach(function (g) {
+        g.addEventListener("scroll", function () {
+            var h = g.previousElementSibling;
+            if (h && h.classList.contains("swipe-hint")) h.classList.add("gone");
+        }, { passive: true });
+    });
 })();

@@ -1292,3 +1292,59 @@ body::before { content: none; }
     direction: ltr;
     unicode-bidi: isolate;
 }
+
+/* ===== v3: كاروسيل أفقي + فصل الأقسام + الجواب ===== */
+.gallery, .message-stack {
+    display: flex; flex-direction: row; columns: auto; column-gap: 0; gap: 14px;
+    width: 100%; max-width: none; margin: 18px 0 0;
+    overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; padding: 18px 9vw 26px; box-sizing: border-box;
+    scrollbar-width: none;
+}
+.gallery::-webkit-scrollbar, .message-stack::-webkit-scrollbar { display: none; }
+.gallery .shot { flex: 0 0 74%; max-width: 340px; margin: 0; scroll-snap-align: center; break-inside: auto; }
+.gallery .shot img { height: 380px; object-fit: cover; border-radius: 2px; }
+.message-stack .message-card {
+    flex: 0 0 76%; max-width: 330px; min-height: 170px; margin: 0; scroll-snap-align: center;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    font-size: 20px; line-height: 1.9; padding: 26px 20px; border-radius: 22px;
+    background: linear-gradient(160deg, rgba(120,40,90,.55), rgba(50,20,80,.65));
+    border: 1px solid rgba(255,190,220,.25); box-shadow: 0 14px 34px rgba(0,0,0,.55);
+    transform: none; transition: transform .3s; cursor: pointer;
+}
+.message-stack .message-card.tapped { transform: scale(1.06); }
+.swipe-hint { font-size: 13px; opacity: .75; margin-top: 12px; animation: nudge 1.8s ease-in-out infinite; transition: opacity .5s; }
+.swipe-hint.gone { opacity: 0; }
+@keyframes nudge { 50% { transform: translateX(8px); } }
+@media (min-width: 700px) { .gallery, .message-stack { justify-content: flex-start; } .gallery .shot { flex-basis: 300px; } }
+
+/* فصل الأقسام: خلفية مختلفة وحدود لكل فصل */
+.block { border-top: 1px solid rgba(255,190,220,.28); box-shadow: inset 0 22px 30px -22px rgba(255,150,200,.18); }
+#story    { background: radial-gradient(120% 60% at 50% 0%, rgba(90,40,120,.45), transparent 70%), #0d0716; }
+#photos   { background: radial-gradient(120% 60% at 50% 0%, rgba(150,40,90,.40), transparent 70%), #12060e; }
+#videos   { background: radial-gradient(120% 60% at 50% 0%, rgba(30,70,140,.42), transparent 70%), #060a16; }
+#messages { background: radial-gradient(120% 60% at 50% 0%, rgba(170,60,80,.38), transparent 70%), #14070a; }
+#letter   { background: radial-gradient(120% 60% at 50% 0%, rgba(190,120,60,.30), transparent 70%), #130c07; overflow: hidden; }
+#songs    { background: radial-gradient(120% 60% at 50% 0%, rgba(40,120,110,.35), transparent 70%), #06100f; }
+.ending.block { background: radial-gradient(100% 70% at 50% 100%, rgba(200,70,130,.35), transparent 70%), #0a0510; }
+.block .kicker { display: inline-block; padding: 5px 16px; border: 1px solid rgba(255,190,220,.4); border-radius: 30px; background: rgba(255,255,255,.05); }
+
+/* الجواب */
+.letter-open {
+    position: sticky; bottom: 18px; z-index: 30; display: inline-block; margin: 16px auto 26px;
+    padding: 15px 26px; font-size: 19px; border-radius: 40px; border: 0; color: #fff; cursor: pointer;
+    font-family: inherit; font-weight: 700;
+    background: linear-gradient(135deg, #ff4f93, #ff8a5c);
+    box-shadow: 0 0 0 0 rgba(255,100,150,.6), 0 12px 30px rgba(0,0,0,.55);
+    animation: pulse 1.8s infinite, bob 3s ease-in-out infinite;
+}
+@keyframes pulse { 70% { box-shadow: 0 0 0 22px rgba(255,100,150,0), 0 12px 30px rgba(0,0,0,.55); } 100% { box-shadow: 0 0 0 0 rgba(255,100,150,0), 0 12px 30px rgba(0,0,0,.55); } }
+@keyframes bob { 50% { transform: translateY(-7px) rotate(-1.5deg); } }
+.letter-intro::before { content: "💌 🌹 ✨ "; }
+.letter-intro::after { content: " ✨ 🌹 💌"; }
+.letter-intro { animation: bob 3.4s ease-in-out infinite; font-size: 20px; }
+.float-emoji { position: absolute; bottom: -40px; pointer-events: none; z-index: 1; opacity: .9; animation: floatup linear forwards; }
+@keyframes floatup { to { transform: translateY(-700px) rotate(25deg); opacity: 0; } }
+.pop-emoji { position: fixed; z-index: 9999; pointer-events: none; animation: popup 1.6s ease-out forwards; }
+@keyframes popup { to { transform: translateY(-130px) scale(1.4); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .letter-open, .letter-intro, .swipe-hint { animation: none; } }
