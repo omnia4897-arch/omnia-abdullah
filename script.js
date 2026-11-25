@@ -342,3 +342,22 @@ renderJournal(); renderFlying();
         }
     } catch (e) {}
 })();
+
+(function () {
+    var m = document.getElementById("fly-compose"); if (!m) return;
+    var t = document.getElementById("fly-title-in"), x = document.getElementById("fly-text-in"), msg = document.getElementById("fly-msg");
+    function open(v) { m.classList.toggle("open", v); m.setAttribute("aria-hidden", v ? "false" : "true"); msg.textContent = ""; if (v) setTimeout(function () { x.focus(); }, 100); }
+    document.getElementById("fly-add").addEventListener("click", function () { open(true); });
+    document.getElementById("fly-cancel").addEventListener("click", function () { open(false); });
+    m.addEventListener("click", function (e) { if (e.target === m) open(false); });
+    document.getElementById("fly-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var v = x.value.trim(); if (!v) return;
+        var title = t.value.trim(), btn = document.querySelector(".fly-send"); btn.disabled = true; msg.textContent = "بنطيّرها... ⏳";
+        apiPost({ kind: "flying", date: todayISO(), title: title, text: v }).then(function (r) {
+            btn.disabled = false;
+            if (r && r.ok) { flyingEntries.push({ id: r.id, kind: "flying", date: todayISO(), title: title, text: v }); renderFlying(); x.value = ""; t.value = ""; open(false); }
+            else { msg.textContent = "حصلت مشكلة، جربي تاني 🙏"; }
+        }).catch(function () { btn.disabled = false; msg.textContent = "حصلت مشكلة في النت، جربي تاني 🙏"; });
+    });
+})();

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700&family=Marhey:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 <div class="sky"></div>
@@ -400,7 +400,9 @@
 <div class="kicker">الفصل السابع</div>
 <div class="section-heading"><span>✉️</span><h2>رسايل طايرة</h2><span>🕊️</span></div>
 <p class="section-intro">رسايل بتطير من قلبي لقلبك... اضغط على الرسالة عشان تفتحها.</p>
+<button class="journal-add" id="fly-add" type="button">✉️ اكتبي رسالة طايرة</button>
 <div class="fly-list" id="fly-list"></div>
+<div class="journal-modal" id="fly-compose" aria-hidden="true"><form class="journal-form" id="fly-form"><h3>✉️ اكتبي رسالة طايرة</h3><input id="fly-title-in" class="fly-title-in" type="text" maxlength="120" placeholder="عنوان الرسالة (اختياري)"><textarea id="fly-text-in" rows="7" placeholder="اكتبي هنا..." required></textarea><div class="journal-msg" id="fly-msg"></div><div class="journal-actions"><button type="submit" class="journal-send fly-send">طيّري الرسالة 🕊️</button><button type="button" class="journal-cancel" id="fly-cancel">إلغاء</button></div></form></div>
 <div class="fly-modal" id="fly-modal" aria-hidden="true"><div class="fly-paper" id="fly-paper"><button type="button" class="fly-close" id="fly-close" aria-label="إغلاق">✕</button><div class="fly-pdate" id="fly-pdate"></div><h3 id="fly-ptitle"></h3><div class="fly-ptext" id="fly-ptext"></div></div></div>
 </section>
 
@@ -419,6 +421,6 @@
 <svg class="quiz-sticker" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="52" r="40" fill="#ffd54a" stroke="#e0a800" stroke-width="3"/><path d="M26 42 Q34 32 42 42" stroke="#5a3b00" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M58 42 Q66 32 74 42" stroke="#5a3b00" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M28 58 Q50 92 72 58 Z" fill="#7a1f2b" stroke="#5a3b00" stroke-width="3" stroke-linejoin="round"/><path d="M36 66 Q50 78 64 66 Q50 72 36 66Z" fill="#ff8aa5"/><circle cx="24" cy="56" r="6" fill="#ff9aa8" opacity=".7"/><circle cx="76" cy="56" r="6" fill="#ff9aa8" opacity=".7"/><path d="M18 40 q-4 8 0 14" stroke="#5ec7ff" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M82 40 q4 8 0 14" stroke="#5ec7ff" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
 <div id="quiz-body"><div class="quiz-q">بتحب أمنية قد إيه النهارده؟ 😂</div>
 <form id="quiz-form"><input id="quiz-in" type="text" maxlength="300" placeholder="اكتب بصراحة 😅" autocomplete="off"><button type="submit" id="quiz-send">ابعت 😂</button></form></div></div>
-<script src="script.js?v=9"></script>
+<script src="script.js?v=10"></script>
 </body>
 </html>
