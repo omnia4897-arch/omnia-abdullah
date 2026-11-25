@@ -110,6 +110,7 @@ updateCounter();
     function open(i) { show(i); lb.classList.add("open"); lb.setAttribute("aria-hidden", "false"); }
     function close() { lb.classList.remove("open"); lb.setAttribute("aria-hidden", "true"); }
     shots.forEach(function (s, i) { s.addEventListener("click", function () { open(i); }); });
+    window.addShot = function (im) { shots.push(im); var k = shots.length - 1; im.addEventListener("click", function () { open(k); }); };
     lb.querySelector(".lb-close").addEventListener("click", close);
     lb.querySelector(".lb-prev").addEventListener("click", function (e) { e.stopPropagation(); show(cur + 1); });
     lb.querySelector(".lb-next").addEventListener("click", function (e) { e.stopPropagation(); show(cur - 1); });
@@ -197,6 +198,64 @@ updateCounter();
 
 /* ===== الباك إند (Google Apps Script) ===== */
 var API_URL = "https://script.google.com/macros/s/AKfycbwoCZuUhumgz6j_UymYYVFUXNsLZjnfVc8In8DLHq4Jcm42Avro8KceD8QzboSpTTLP/exec";
+var MEDIA_SEEN = {};
+function addMedia(e) {
+    var id = String(e.text); if (MEDIA_SEEN[id]) return; MEDIA_SEEN[id] = 1;
+    if (e.title === "video") {
+        var g = document.querySelector(".vgrid"); if (!g) return;
+        var d = document.createElement("div"); d.className = "vcard in port";
+        var f = document.createElement("iframe"); f.src = "https://drive.google.com/file/d/" + id + "/preview"; f.setAttribute("allowfullscreen", ""); f.setAttribute("loading", "lazy"); f.allow = "autoplay; fullscreen";
+        d.appendChild(f); g.appendChild(d);
+    } else {
+        var gl = document.querySelector(".gallery"); if (!gl) return;
+        var fg = document.createElement("figure"); fg.className = "shot in";
+        var im = document.createElement("img"); im.src = "https://lh3.googleusercontent.com/d/" + id + "=w1280"; im.alt = "ذكرى"; im.loading = "lazy";
+        fg.appendChild(im); gl.appendChild(fg);
+        if (window.addShot) window.addShot(im);
+    }
+}
+function shrinkImage(file) {
+    return new Promise(function (res, rej) {
+        var u = URL.createObjectURL(file), im = new Image();
+        im.onload = function () {
+            var m = 1600, w = im.naturalWidth, h = im.naturalHeight, k = Math.min(1, m / Math.max(w, h));
+            var c = document.createElement("canvas"); c.width = Math.round(w * k); c.height = Math.round(h * k);
+            c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+            URL.revokeObjectURL(u);
+            res(c.toDataURL("image/jpeg", 0.85).split(",")[1]);
+        };
+        im.onerror = function () { rej(new Error("img")); };
+        im.src = u;
+    });
+}
+function fileToB64(file) {
+    return new Promise(function (res, rej) { var r = new FileReader(); r.onload = function () { res(String(r.result).split(",")[1]); }; r.onerror = rej; r.readAsDataURL(file); });
+}
+(function () {
+    function wire(addId, inId, msgId, isVideo) {
+        var add = document.getElementById(addId), inp = document.getElementById(inId), msg = document.getElementById(msgId);
+        if (!add) return;
+        add.addEventListener("click", function () { inp.click(); });
+        inp.addEventListener("change", function () {
+            var files = Array.prototype.slice.call(inp.files); inp.value = "";
+            if (!files.length) return;
+            add.disabled = true; var ok = 0, i = 0;
+            (function next() {
+                if (i >= files.length) { add.disabled = false; msg.textContent = ok ? "اتحفظ " + ok + " 💖 وظهر في الموقع" : "محصلش حفظ، جربي تاني 🙏"; return; }
+                var f = files[i++]; msg.textContent = "بنرفع " + i + " من " + files.length + "... استني ثواني ⏳";
+                if (isVideo && f.size > 30 * 1024 * 1024) { msg.textContent = "الفيديو كبير (أكتر من 30 ميجا)، ابعتيه لنا هنا ونضيفه 🙏"; next(); return; }
+                (isVideo ? fileToB64(f) : shrinkImage(f)).then(function (b64) {
+                    return apiPost({ action: "upload", mime: isVideo ? f.type || "video/mp4" : "image/jpeg", name: f.name, data: b64 });
+                }).then(function (r) {
+                    if (r && r.ok) { ok++; addMedia({ title: isVideo ? "video" : "photo", text: r.fileId }); }
+                    next();
+                }).catch(function () { next(); });
+            })();
+        });
+    }
+    wire("photo-add", "photo-in", "photo-msg", false);
+    wire("video-add", "video-in", "video-msg", true);
+})();
 var API_SECRET = "7696d4b2c626ae8b2aa3b595";
 function apiPost(o) {
     o.secret = API_SECRET;
@@ -289,6 +348,7 @@ renderJournal(); renderFlying(); renderAnswers();
             if (e.kind === "flying") flyingEntries.push(e);
             if (e.kind === "answer") answerEntries.push(e);
             if (e.kind === "month") addMonth(e, false);
+            if (e.kind === "media") addMedia(e);
         });
         renderJournal(); renderFlying(); renderAnswers();
     }).catch(function () {});

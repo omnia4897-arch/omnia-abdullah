@@ -1365,7 +1365,7 @@ body::before { content: none; }
 .journal-form textarea { width: 100%; box-sizing: border-box; padding: 12px; border-radius: 14px; border: 1px solid rgba(255,190,220,.35); background: #0d0716; color: #fff; font: 17px/1.8 inherit; font-family: inherit; resize: vertical; direction: rtl; }
 .journal-actions { display: flex; gap: 10px; margin-top: 14px; justify-content: center; }
 .journal-actions button { padding: 11px 20px; border-radius: 26px; border: 0; font: 700 16px inherit; font-family: inherit; cursor: pointer; }
-.journal-send { background: linear-gradient(135deg, #25d366, #12a150); color: #fff; }
+.journal-send { background: linear-gradient(135deg, #ff6fa5, #9b6bff); color: #fff; }
 .journal-cancel { background: rgba(255,255,255,.12); color: #fff; }
 
 /* ===== رسايل طايرة ===== */
@@ -1465,3 +1465,7 @@ body::before { content: none; }
 .wed-grid small { font-size: 13px; opacity: .85; }
 .wed-date { direction: ltr; unicode-bidi: isolate; margin-top: 8px; font-family: "Amiri", serif; letter-spacing: 2px; color: #ffd9e6; opacity: .9; }
 .milestone.soon { opacity: 1 !important; transform: none !important; }
+
+.media-add { display: block; margin: 6px auto 4px; }
+.media-msg { text-align: center; margin-bottom: 10px; }
+.vcard iframe { width: 100%; height: 340px; border: 0; border-radius: 16px; background: #000; display: block; }
