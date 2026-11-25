@@ -1441,3 +1441,27 @@ body::before { content: none; }
 
 .fly-title-in { width: 100%; box-sizing: border-box; margin-bottom: 10px; padding: 11px 12px; border-radius: 14px; border: 1px solid rgba(255,190,220,.35); background: #0d0716; color: #fff; font: 17px inherit; font-family: inherit; direction: rtl; }
 #flying .journal-add { display: block; }
+
+.quiz-who { display: flex; gap: 8px; }
+.quiz-who button { flex: 1; padding: 10px; border: 0; border-radius: 14px; font: 700 16px inherit; font-family: inherit; cursor: pointer; color: #fff; background: #ff5c8a; }
+.quiz-who button:last-child { background: #4a8bff; }
+.quiz-switch { margin-top: 6px; border: 0; background: transparent; color: #8a5a50; font: 12px inherit; font-family: inherit; text-decoration: underline; cursor: pointer; padding: 2px; }
+.quiz-thanks a { color: #c2185b; }
+#answers { background: radial-gradient(120% 60% at 50% 0%, rgba(230,170,40,.28), transparent 70%), #120d05; }
+.ans-list { width: min(92%, 460px); margin: 22px auto 0; display: flex; flex-direction: column; gap: 14px; }
+.ans-card { text-align: right; padding: 16px 18px; border-radius: 20px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,190,220,.25); }
+.ans-card.her { border-color: rgba(190,140,255,.55); background: linear-gradient(160deg, rgba(150,90,230,.22), rgba(255,255,255,.04)); }
+.ans-card.him { border-color: rgba(110,170,255,.55); background: linear-gradient(160deg, rgba(70,130,255,.22), rgba(255,255,255,.04)); }
+.ans-head { display: flex; justify-content: space-between; align-items: center; font-size: 13px; opacity: .9; margin-bottom: 8px; }
+.ans-who { font-weight: 700; font-size: 15px; }
+.ans-q { font-size: 15px; opacity: .8; margin-bottom: 6px; }
+.ans-a { font-size: 20px; line-height: 1.8; font-family: "Aref Ruqaa", "Amiri", serif; }
+
+#story .journal-add { display: block; margin: 8px auto 18px; }
+#wedding { background: radial-gradient(120% 70% at 50% 0%, rgba(255,215,140,.30), transparent 70%), linear-gradient(#150e08, #1d0d17); }
+.wed-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 380px; margin: 26px auto 14px; padding: 0 10px; }
+.wed-grid div { padding: 16px 4px; border-radius: 18px; background: linear-gradient(160deg, rgba(255,215,140,.18), rgba(255,120,170,.14)); border: 1px solid rgba(255,220,170,.4); box-shadow: 0 0 24px rgba(255,200,120,.18); }
+.wed-grid b { display: block; font-size: 30px; font-family: "Cairo", sans-serif; color: #ffe2a8; direction: ltr; }
+.wed-grid small { font-size: 13px; opacity: .85; }
+.wed-date { direction: ltr; unicode-bidi: isolate; margin-top: 8px; font-family: "Amiri", serif; letter-spacing: 2px; color: #ffd9e6; opacity: .9; }
+.milestone.soon { opacity: 1 !important; transform: none !important; }

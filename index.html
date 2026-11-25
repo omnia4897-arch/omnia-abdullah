@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700&family=Marhey:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
 <div class="sky"></div>
@@ -16,7 +16,7 @@
 <canvas id="hearts" aria-hidden="true"></canvas>
 
 <nav class="nav" id="nav" aria-label="الأقسام">
-<a href="#top">البداية</a><a href="#story">الحكاية</a><a href="#photos">الصور</a><a href="#videos">الفيديوهات</a><a href="#messages">الرسائل</a><a href="#journal">يومياتنا</a><a href="#letter">أول جواب</a><a href="#flying">رسايل طايرة</a></nav>
+<a href="#top">البداية</a><a href="#story">الحكاية</a><a href="#photos">الصور</a><a href="#videos">الفيديوهات</a><a href="#messages">الرسائل</a><a href="#journal">يومياتنا</a><a href="#letter">أول جواب</a><a href="#flying">رسايل طايرة</a><a href="#answers">أجوبتنا</a><a href="#wedding">الفرح</a></nav>
 
 <main class="website" id="top">
 
@@ -39,6 +39,7 @@
 <section class="block" id="story">
 <div class="kicker">الفصل الأول</div>
 <div class="section-heading"><span>❤️</span><h2>بداية الحكاية</h2><span>❤️</span></div>
+<button class="journal-add" id="month-add" type="button">➕ أضيفي شهر</button>
 <div class="timeline">
 <article class="milestone reveal">
 <div class="dot"></div>
@@ -59,6 +60,7 @@
 <p class="highlight">يمكن كان أول شهر مليان مطبات... بس الحمد لله عدّيناه سوا. 🤍</p>
 </div></article>
 </div>
+<div class="journal-modal" id="month-modal" aria-hidden="true"><form class="journal-form" id="month-form"><h3>➕ أضيفي شهر</h3><input id="month-title-in" class="fly-title-in" type="text" maxlength="120" placeholder="عنوان الشهر (مثلاً: أول شهر 🌙)"><input id="month-date-in" class="fly-title-in" type="date" required><textarea id="month-text-in" rows="7" placeholder="احكي عن الشهر ده... (سطر جديد = فقرة)" required></textarea><div class="journal-msg" id="month-msg"></div><div class="journal-actions"><button type="submit" class="journal-send month-send">احفظي الشهر ❤️</button><button type="button" class="journal-cancel" id="month-cancel">إلغاء</button></div></form></div>
 </section>
 
 <section class="block" id="photos">
@@ -406,6 +408,21 @@
 <div class="fly-modal" id="fly-modal" aria-hidden="true"><div class="fly-paper" id="fly-paper"><button type="button" class="fly-close" id="fly-close" aria-label="إغلاق">✕</button><div class="fly-pdate" id="fly-pdate"></div><h3 id="fly-ptitle"></h3><div class="fly-ptext" id="fly-ptext"></div></div></div>
 </section>
 
+<section class="block" id="answers">
+<div class="kicker">الفصل الثامن</div>
+<div class="section-heading"><span>😂</span><h2>أسئلتنا وأجوبتنا</h2><span>💬</span></div>
+<p class="section-intro">كل مرة حد بيفتح الموقع بيتسأل سؤال... وده اللي اتقال بصراحة.</p>
+<div class="ans-list" id="ans-list"></div>
+</section>
+
+<section class="block" id="wedding">
+<div class="kicker">الفصل التاسع</div>
+<div class="section-heading"><span>💍</span><h2>فاضل على فرحنا</h2><span>🤍</span></div>
+<p class="section-intro">كل ثانية بتعدي... بتقربنا من اليوم اللي هنبقى فيه لبعض على طول.</p>
+<div class="wed-grid"><div><b id="w-d">0</b><small>يوم</small></div><div><b id="w-h">0</b><small>ساعة</small></div><div><b id="w-m">0</b><small>دقيقة</small></div><div><b id="w-s">0</b><small>ثانية</small></div></div>
+<div class="wed-date">29 October 2027</div>
+</section>
+
 <section class="ending block">
 <div class="moon">🌙</div>
 <h2>ولسه الحكاية في أولها...</h2>
@@ -419,8 +436,7 @@
 <div class="lightbox" id="lb" aria-hidden="true"><button class="lb-close" aria-label="إغلاق">✕</button><button class="lb-prev" aria-label="السابق">‹</button><img alt=""><button class="lb-next" aria-label="التالي">›</button></div>
 <div class="quiz" id="quiz" aria-live="polite"><button type="button" class="quiz-x" id="quiz-x" aria-label="إغلاق">✕</button>
 <svg class="quiz-sticker" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="52" r="40" fill="#ffd54a" stroke="#e0a800" stroke-width="3"/><path d="M26 42 Q34 32 42 42" stroke="#5a3b00" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M58 42 Q66 32 74 42" stroke="#5a3b00" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M28 58 Q50 92 72 58 Z" fill="#7a1f2b" stroke="#5a3b00" stroke-width="3" stroke-linejoin="round"/><path d="M36 66 Q50 78 64 66 Q50 72 36 66Z" fill="#ff8aa5"/><circle cx="24" cy="56" r="6" fill="#ff9aa8" opacity=".7"/><circle cx="76" cy="56" r="6" fill="#ff9aa8" opacity=".7"/><path d="M18 40 q-4 8 0 14" stroke="#5ec7ff" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M82 40 q4 8 0 14" stroke="#5ec7ff" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
-<div id="quiz-body"><div class="quiz-q">بتحب أمنية قد إيه النهارده؟ 😂</div>
-<form id="quiz-form"><input id="quiz-in" type="text" maxlength="300" placeholder="اكتب بصراحة 😅" autocomplete="off"><button type="submit" id="quiz-send">ابعت 😂</button></form></div></div>
-<script src="script.js?v=10"></script>
+<div id="quiz-body"></div></div>
+<script src="script.js?v=12"></script>
 </body>
 </html>

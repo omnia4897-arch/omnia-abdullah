@@ -214,7 +214,22 @@ var JOURNAL_SEED = [
 /* ===== رسايل طايرة ===== (بتيجي من الشيت) */
 var FLYING_SEED = [];
 
-var journalEntries = JOURNAL_SEED.slice(), flyingEntries = FLYING_SEED.slice();
+var journalEntries = JOURNAL_SEED.slice(), flyingEntries = FLYING_SEED.slice(), answerEntries = [];
+function renderAnswers() {
+    var list = document.getElementById("ans-list"); if (!list) return;
+    list.innerHTML = "";
+    if (!answerEntries.length) { var ph = document.createElement("div"); ph.className = "fly-empty"; ph.innerHTML = "<p>لسه مفيش أجوبة... أول سؤال هيظهر لما حد يجاوب 😄</p>"; list.appendChild(ph); return; }
+    answerEntries.slice().sort(function (a, b) { return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); }).reverse().sort(function (a, b) { return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); }).forEach(function (e) {
+        var parts = String(e.title || "").split(" | "), who = parts.length > 1 ? parts[0] : "", q = parts.length > 1 ? parts.slice(1).join(" | ") : e.title;
+        var c = document.createElement("article"); c.className = "ans-card" + (who === "أمنية" ? " her" : (who === "عبدالله" ? " him" : ""));
+        var h = document.createElement("div"); h.className = "ans-head";
+        if (who) { var w = document.createElement("span"); w.className = "ans-who"; w.textContent = (who === "أمنية" ? "💜 " : "💙 ") + who; h.appendChild(w); }
+        var dt = document.createElement("span"); dt.className = "ans-date"; dt.textContent = fmtDate(e.date); h.appendChild(dt);
+        var qq = document.createElement("div"); qq.className = "ans-q"; qq.textContent = q;
+        var aa = document.createElement("div"); aa.className = "ans-a"; aa.textContent = e.text;
+        c.appendChild(h); c.appendChild(qq); c.appendChild(aa); list.appendChild(c);
+    });
+}
 function renderJournal() {
     var list = document.getElementById("journal-list");
     if (!list) return;
@@ -257,7 +272,7 @@ function renderFlying() {
         list.appendChild(b);
     });
 }
-renderJournal(); renderFlying();
+renderJournal(); renderFlying(); renderAnswers();
 (function () {
     var modal = document.getElementById("fly-modal");
     if (modal) {
@@ -266,14 +281,16 @@ renderJournal(); renderFlying();
         modal.addEventListener("click", function (ev) { if (ev.target === modal) hide(); });
     }
     /* تحميل الإدخالات من الشيت */
-    fetch(API_URL).then(function (r) { return r.json(); }).then(function (j) {
+    fetch(API_URL + "?key=8ae1ce987dc5acd84dbf").then(function (r) { return r.json(); }).then(function (j) {
         if (!j || !j.ok) return;
         var ex = {}; journalEntries.forEach(function (e) { ex[e.id] = 1; });
         j.entries.forEach(function (e) {
             if (e.kind === "journal" && !ex[e.id]) journalEntries.push(e);
             if (e.kind === "flying") flyingEntries.push(e);
+            if (e.kind === "answer") answerEntries.push(e);
+            if (e.kind === "month") addMonth(e, false);
         });
-        renderJournal(); renderFlying();
+        renderJournal(); renderFlying(); renderAnswers();
     }).catch(function () {});
 
     /* نموذج اكتبي ذكرى */
@@ -296,11 +313,11 @@ renderJournal(); renderFlying();
     }
 
     /* قصة الشهور: فتح وقفل، واحد بس مفتوح */
-    var ms = document.querySelectorAll("#story .milestone");
-    ms.forEach(function (m, i) {
+    var story = document.querySelector("#story .timeline"), nx = null;
+    function wireAcc(m) {
         m.classList.add("acc");
         var head = document.createElement("button"); head.type = "button"; head.className = "acc-head";
-        var k = m.querySelector(".kicker.small"), dte = m.querySelector(".memory-date"), h3 = m.querySelector("h3");
+        var k = m.querySelector(".kicker.small"), dte = m.querySelector(".memory-date");
         var label = document.createElement("span"); label.className = "acc-label";
         if (k) label.appendChild(k);
         if (dte) label.appendChild(dte);
@@ -309,38 +326,90 @@ renderJournal(); renderFlying();
         var body = m.querySelector(".memory-text"); m.insertBefore(head, body);
         head.addEventListener("click", function () {
             var was = m.classList.contains("open");
-            ms.forEach(function (o) { o.classList.remove("open"); });
+            document.querySelectorAll("#story .milestone.acc").forEach(function (o) { o.classList.remove("open"); });
             if (!was) m.classList.add("open");
         });
-        if (i === 0) m.classList.add("open");
-    });
-    var story = document.querySelector("#story .timeline");
+    }
+    var monthSeen = {};
+    function enDate(iso) { var p = iso.split("-"); var mn = ["January","February","March","April","May","June","July","August","September","October","November","December"]; return parseInt(p[2], 10) + " " + mn[parseInt(p[1], 10) - 1] + " " + p[0]; }
+    function addMonth(e, openIt) {
+        if (!story || monthSeen[e.id]) return; monthSeen[e.id] = 1;
+        var m = document.createElement("article"); m.className = "milestone in";
+        m.setAttribute("data-date", e.date);
+        var dot = document.createElement("div"); dot.className = "dot"; m.appendChild(dot);
+        if (e.title) { var k = document.createElement("div"); k.className = "kicker small"; k.textContent = e.title; m.appendChild(k); }
+        var dt = document.createElement("div"); dt.className = "memory-date"; dt.textContent = enDate(e.date); m.appendChild(dt);
+        var t = document.createElement("div"); t.className = "memory-text";
+        String(e.text).split(/\n+/).forEach(function (line) { if (!line.trim()) return; var p = document.createElement("p"); p.textContent = line; t.appendChild(p); });
+        m.appendChild(t);
+        wireAcc(m);
+        var after = null;
+        story.querySelectorAll(".milestone[data-date]").forEach(function (o) { if (o.getAttribute("data-date") > e.date) { if (!after) after = o; } });
+        story.insertBefore(m, after || nx);
+        if (openIt) { document.querySelectorAll("#story .milestone.acc").forEach(function (o) { o.classList.remove("open"); }); m.classList.add("open"); }
+    }
+    document.querySelectorAll("#story .milestone").forEach(function (m, i) { wireAcc(m); if (i === 0) m.classList.add("open"); });
     if (story) {
-        var nx = document.createElement("article"); nx.className = "milestone soon reveal";
+        nx = document.createElement("article"); nx.className = "milestone soon in";
         nx.innerHTML = '<div class="dot"></div><div class="soon-card"><span class="soon-ico">🌱</span><div>الشهر الجاي...</div><small>الحكاية لسه بتكمل ❤️</small></div>';
         story.appendChild(nx);
     }
+    var mm = document.getElementById("month-modal");
+    if (mm) {
+        var mt = document.getElementById("month-title-in"), md = document.getElementById("month-date-in"), mx = document.getElementById("month-text-in"), mg = document.getElementById("month-msg");
+        md.value = todayISO();
+        function mopen(v) { mm.classList.toggle("open", v); mm.setAttribute("aria-hidden", v ? "false" : "true"); mg.textContent = ""; }
+        document.getElementById("month-add").addEventListener("click", function () { mopen(true); });
+        document.getElementById("month-cancel").addEventListener("click", function () { mopen(false); });
+        mm.addEventListener("click", function (e) { if (e.target === mm) mopen(false); });
+        document.getElementById("month-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            var v = mx.value.trim(), dv = md.value; if (!v || !dv) return;
+            var title = mt.value.trim(), btn = document.querySelector(".month-send"); btn.disabled = true; mg.textContent = "بنحفظه... ⏳";
+            apiPost({ kind: "month", date: dv, title: title, text: v }).then(function (r) {
+                btn.disabled = false;
+                if (r && r.ok) { addMonth({ id: r.id, date: dv, title: title, text: v }, true); mx.value = ""; mt.value = ""; mopen(false); document.getElementById("story").scrollIntoView({ behavior: "smooth" }); }
+                else { mg.textContent = "حصلت مشكلة، جربي تاني 🙏"; }
+            }).catch(function () { btn.disabled = false; mg.textContent = "حصلت مشكلة في النت، جربي تاني 🙏"; });
+        });
+    }
 
-    /* كارت السؤال الظريف */
-    try {
-        var day = todayISO();
-        if (localStorage.getItem("qz-day") !== day) {
-            var q = document.getElementById("quiz");
-            setTimeout(function () { q.classList.add("show"); }, 4000);
-            var done = function () { try { localStorage.setItem("qz-day", day); } catch (e) {} q.classList.remove("show"); };
-            document.getElementById("quiz-x").addEventListener("click", done);
+    /* كارت السؤال المتغير */
+    var Q_HER = ["بتحبي عبدالله قد إيه النهارده؟ 😂", "إيه أكتر حاجة في عبدالله بتخليكي تضحكي من قلبك؟", "إيه أول حاجة لفتت نظرك في عبدالله؟", "لو عبدالله هيطلب منك حاجة واحدة النهارده، تتوقعي تكون إيه؟", "إيه الحاجة اللي عبدالله بيعملها وبتحسسك بالأمان؟", "إيه أحلى جملة عبدالله قالهالك؟", "لو هتوصفي عبدالله في 3 كلمات، هيبقوا إيه؟", "إيه الحاجة اللي نفسك تعمليها مع عبدالله ولسه ماعملتوهاش؟", "إيه اللي عبدالله بيعمله وبيضايقك بس بتحبيه برضه؟ 😂", "إيه أحلى ذكرى ليكي مع عبدالله لحد دلوقتي؟", "لو عبدالله فاكر يوم واحد بس من حكايتكم، تتوقعي يكون يوم إيه؟", "إيه الأكلة اللي لما بتاكليها مع عبدالله بتبقى أحلى؟", "إيه الحاجة اللي اتعلمتيها من عبدالله؟", "إيه الدعوة اللي نفسك تدعيها لعبدالله النهارده؟", "بعد 10 سنين، نفسك تكونوا فين ومع بعض بتعملوا إيه؟", "إيه الحاجة الصغيرة اللي عبدالله بيعملها وانتي مش بتنسيها؟", "تتوقعي عبدالله بيحس بإيه دلوقتي؟", "إيه الأغنية اللي لما بتسمعيها بتفتكري عبدالله؟", "إيه الحاجة اللي نفسك عبدالله يعرفها عنك ولسه ماقولتهاش؟", "قوليلي موقف مع عبدالله لسه بتضحكي لما بتفتكريه 😂"];
+    var Q_HIM = ["بتحب أمنية قد إيه النهارده؟ 😂", "إيه أكتر حاجة في أمنية بتخليك تضحك من قلبك؟", "إيه أول حاجة لفتت نظرك في أمنية؟", "لو أمنية هتطلب منك حاجة واحدة النهارده، تتوقع تكون إيه؟", "إيه الحاجة اللي أمنية بتعملها وبتحسسك بالأمان؟", "إيه أحلى جملة أمنية قالتهالك؟", "لو هتوصف أمنية في 3 كلمات، هيبقوا إيه؟", "إيه الحاجة اللي نفسك تعملها مع أمنية ولسه ماعملتوهاش؟", "إيه اللي أمنية بتعمله وبيضايقك بس بتحبها برضه؟ 😂", "إيه أحلى ذكرى ليك مع أمنية لحد دلوقتي؟", "لو أمنية فاكرة يوم واحد بس من حكايتكم، تتوقع يكون يوم إيه؟", "إيه الأكلة اللي لما بتاكلها مع أمنية بتبقى أحلى؟", "إيه الحاجة اللي اتعلمتها من أمنية؟", "إيه الدعوة اللي نفسك تدعيها لأمنية النهارده؟", "بعد 10 سنين، نفسك تكونوا فين ومع بعض بتعملوا إيه؟", "إيه الحاجة الصغيرة اللي أمنية بتعملها وإنت مش بتنساها؟", "تتوقع أمنية بتحس بإيه دلوقتي؟", "إيه الأغنية اللي لما بتسمعها بتفتكر أمنية؟", "إيه الحاجة اللي نفسك أمنية تعرفها عنك ولسه ماقولتهاش؟", "قولي موقف مع أمنية لسه بتضحك لما بتفتكره 😂"];
+    var qz = document.getElementById("quiz");
+    if (qz) {
+        var who = null; try { who = localStorage.getItem("qz-who"); } catch (e) {}
+        var curQ = "", body = document.getElementById("quiz-body");
+        function qPick() { var bank = who === "omnia" ? Q_HER : Q_HIM; curQ = bank[Math.floor(Math.random() * bank.length)]; }
+        function qRender() {
+            if (!who) {
+                body.innerHTML = '<div class="quiz-q">مين اللي فاتح الموقع؟ 😄</div><div class="quiz-who"><button type="button" data-w="omnia">أمنية 💜</button><button type="button" data-w="abdullah">عبدالله 💙</button></div>';
+                body.querySelectorAll("button").forEach(function (b) { b.addEventListener("click", function () { who = b.getAttribute("data-w"); try { localStorage.setItem("qz-who", who); } catch (e) {} qRender(); }); });
+                return;
+            }
+            qPick();
+            body.innerHTML = '<div class="quiz-q"></div><form id="quiz-form"><input id="quiz-in" type="text" maxlength="300" autocomplete="off"><button type="submit" id="quiz-send">ابعت 😂</button></form><button type="button" class="quiz-switch" id="quiz-switch">مش أنا؟ غيّر</button>';
+            body.querySelector(".quiz-q").textContent = curQ;
+            document.getElementById("quiz-in").placeholder = "اكتب بصراحة 😅";
+            document.getElementById("quiz-switch").addEventListener("click", function () { who = null; try { localStorage.removeItem("qz-who"); } catch (e) {} qRender(); });
             document.getElementById("quiz-form").addEventListener("submit", function (e) {
                 e.preventDefault();
                 var v = document.getElementById("quiz-in").value.trim(); if (!v) return;
                 var b = document.getElementById("quiz-send"); b.disabled = true;
-                apiPost({ kind: "answer", date: day, title: "بتحب أمنية قد إيه النهارده؟", text: v }).then(function () {
-                    document.getElementById("quiz-body").innerHTML = '<div class="quiz-thanks">وصلت! 😂❤️<br><small>أمنية هتعرف على طول</small></div>';
-                    try { localStorage.setItem("qz-day", day); } catch (e) {}
-                    setTimeout(function () { q.classList.remove("show"); }, 2600);
+                var wn = who === "omnia" ? "أمنية" : "عبدالله", asked = curQ;
+                apiPost({ kind: "answer", date: todayISO(), title: wn + " | " + asked, text: v }).then(function (r) {
+                    if (r && r.ok) { answerEntries.push({ id: r.id, kind: "answer", date: todayISO(), title: wn + " | " + asked, text: v }); renderAnswers(); }
+                    body.innerHTML = '<div class="quiz-thanks">وصلت! 😂❤️<br><small><a href="#answers" id="quiz-see">شوف الأجوبة</a></small></div>';
+                    document.getElementById("quiz-see").addEventListener("click", function () { qz.classList.remove("show"); });
+                    setTimeout(function () { qz.classList.remove("show"); }, 4500);
                 }).catch(function () { b.disabled = false; b.textContent = "جرب تاني 😅"; });
             });
         }
-    } catch (e) {}
+        qRender();
+        setTimeout(function () { qz.classList.add("show"); }, 3500);
+        document.getElementById("quiz-x").addEventListener("click", function () { qz.classList.remove("show"); });
+    }
 })();
 
 (function () {
@@ -360,4 +429,18 @@ renderJournal(); renderFlying();
             else { msg.textContent = "حصلت مشكلة، جربي تاني 🙏"; }
         }).catch(function () { btn.disabled = false; msg.textContent = "حصلت مشكلة في النت، جربي تاني 🙏"; });
     });
+})();
+
+/* ===== عداد الفرح ===== غيّر التاريخ هنا: */
+var WEDDING_DATE = "2027-10-29T00:00:00";
+(function () {
+    var ids = ["w-d", "w-h", "w-m", "w-s"], els = ids.map(function (i) { return document.getElementById(i); });
+    if (!els[0]) return;
+    function tick() {
+        var diff = new Date(WEDDING_DATE) - new Date();
+        if (diff < 0) diff = 0;
+        var d = Math.floor(diff / 86400000), h = Math.floor(diff / 3600000) % 24, m = Math.floor(diff / 60000) % 60, s = Math.floor(diff / 1000) % 60;
+        els[0].textContent = d; els[1].textContent = h; els[2].textContent = m; els[3].textContent = s;
+    }
+    tick(); setInterval(tick, 1000);
 })();
